@@ -22,6 +22,7 @@ export async function memoriesRoutes(app: FastifyInstance) {
         id: memory.id,
         coverUrl: memory.coverUrl,
         excerpt: memory.content.substring(0, 115).concat("..."),
+        createdAt: memory.createdAt,
       };
     });
   });
@@ -53,7 +54,11 @@ export async function memoriesRoutes(app: FastifyInstance) {
       isPublic: z.coerce.boolean().default(false),
     });
 
+    console.log("criou bodySchema");
+
     const { content, coverUrl, isPublic } = bodySchema.parse(request.body);
+
+    console.log("deu parse no request.body");
 
     const memory = await prisma.memory.create({
       data: {
@@ -63,6 +68,8 @@ export async function memoriesRoutes(app: FastifyInstance) {
         userId: request.user.sub,
       },
     });
+
+    console.log("criou memory");
 
     return memory;
   });

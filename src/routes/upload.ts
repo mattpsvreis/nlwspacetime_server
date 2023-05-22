@@ -11,7 +11,7 @@ export async function uploadRoutes(app: FastifyInstance) {
   app.post("/upload", async (request, reply) => {
     const upload = await request.file({
       limits: {
-        fileSize: 20_971_520, // 20mb
+        fileSize: 5200000, // 5mb~
       },
     });
 
@@ -23,7 +23,7 @@ export async function uploadRoutes(app: FastifyInstance) {
 
     const isValidFileFormat = mimeTypeRegex.test(upload.mimetype);
 
-    if (isValidFileFormat) {
+    if (!isValidFileFormat) {
       return reply.status(400).send();
     }
 
